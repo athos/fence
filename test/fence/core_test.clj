@@ -16,7 +16,7 @@
        '(.-bar foo)  '(fence.core/dot foo -bar)
        '(.bar foo baz boo)  '(fence.core/dot foo bar baz boo)
 
-       '(set! (.-bar foo) baz) '(fence.core/set! (.-bar foo) baz)
+       '(set! (.-bar foo) baz) '(clojure.core/aset foo "bar" baz)
 
        :not-a-list :not-a-list))
 

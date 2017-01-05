@@ -121,7 +121,7 @@ Never be afraid of javascript interop again! ^^
 
 `fence.core/+++` transforms all interop forms found in its body code
 into `fence.core/dot` and `fence.core/..` macros (`fence` version of `.` and
-`..`) which in turn will expand to `aget` forms.
+`..`) which in turn will expand to `aget` forms (or `aset` in the context of field assignment).
 
 Clojurescript forms   | Output javascript         | Optimized in :advanced mode without extern     | Optimized with extern
 ----------------------|---------------------------|------------------------------------------------|-------------------
