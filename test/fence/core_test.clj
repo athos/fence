@@ -15,4 +15,16 @@
 
        '(.-bar foo)  '(fence.core/dot foo -bar)
        '(.bar foo baz boo)  '(fence.core/dot foo bar baz boo)
+
+       '(set! (.-bar foo) baz) '(fence.core/set! (.-bar foo) baz)
+
        :not-a-list :not-a-list))
+
+(deftest set!-test
+  (are [x y] (= (macroexpand x) y)
+       '(fence.core/set! (.-bar foo) nil) '(clojure.core/aset foo "bar" nil)
+
+       '(fence.core/set! (.. foo -bar -baz) nil)
+       '(clojure.core/aset (fence.core/dot foo -bar) "baz" nil)
+
+       '(fence.core/set! (f foo) nil) '(set! (f foo) nil)))

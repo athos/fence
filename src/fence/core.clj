@@ -63,12 +63,27 @@
          ([(method :guard method?) obj & xs] :seq)
          `(fence.core/dot ~obj ~(interop-form-for-dot method) ~@xs)
 
+         (['set! x expr] :seq)
+         `(fence.core/set! ~x ~expr)
+
          :else form))
 
 (defn expand-all-interop-forms
   "Expands regular Clojurescript interop forms to Fence's equivalent."
   [form]
   (prewalk expand-interop-form form))
+
+(defmacro set!
+  "Alternative macro version of Clojurescript special form `set!`. Will
+  expand to `aset` forms which are resistant to *renaming symbols* feature
+  of Google Closure compiler in `advanced optimizations` level."
+  [x expr]
+  (match (macroexpand x)
+         (['. obj (attr :guard #(and (symbol? %) (.startsWith (name %) "-")))] :seq)
+         `(aset ~(expand-interop-form obj)
+                ~(name (interop-form-for-dot attr)) ~expr)
+
+         :else `(set! ~x ~expr)))
 
 (defmacro +++
   "The fence macro. Works the same as Clojure's `do` special form
